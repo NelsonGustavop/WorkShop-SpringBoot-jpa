@@ -11,8 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.Slayer.spring.entities.enuns.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 
 @Entity
 @Table(name = "tb_orders")
@@ -28,6 +28,10 @@ public class Order implements Serializable {
 	private Instant instante;
 	
 	
+	
+	private Integer orderStatus;
+	
+	
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private User client;
@@ -35,10 +39,10 @@ public class Order implements Serializable {
 	public Order() {
 	}
 
-	public Order(Integer id, Instant instante, User client) {
+	public Order(Integer id, Instant instante,OrderStatus orderStatus, User client) {
 		super();
 		this.id = id;
-		this.instante = instante;
+		setOrderStatus(orderStatus);
 		this.client = client;
 	}
 
@@ -56,6 +60,18 @@ public class Order implements Serializable {
 
 	public void setInstante(Instant instante) {
 		this.instante = instante;
+	}
+	
+
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOff(orderStatus) ;
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if(orderStatus != null) {
+			this.orderStatus = orderStatus.getCode();
+		}
+		
 	}
 
 	public User getClient() {
