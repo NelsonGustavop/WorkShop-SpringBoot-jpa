@@ -1,78 +1,66 @@
 package com.Slayer.spring.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Instant;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="tb_user")
-public class User implements Serializable {
-
+@Table(name = "tb_orders")
+public class Order implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String name;
-	private String email;
-	private String password;
 	
-	@OneToMany(mappedBy = "client")
-	private List<Order> orders = new ArrayList<>();
+	private Instant instante;
+	
+	@ManyToOne
+	@JoinColumn(name = "client_id")
+	private User client;
 
-	public User() {
+
+	public Order() {
 	}
 
-	public User(Integer id, String name, String email, String password) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.password = password;
-	}
-
-	public List<Order> getOrders() {
-		return orders;
-	}
 
 	public Integer getId() {
 		return id;
 	}
 
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+
+	public Instant getInstante() {
+		return instante;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+
+	public void setInstante(Instant instante) {
+		this.instante = instante;
 	}
 
-	public String getEmail() {
-		return email;
+
+	public User getClient() {
+		return client;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+
+	public void setClient(User client) {
+		this.client = client;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 
 	@Override
 	public int hashCode() {
@@ -82,6 +70,7 @@ public class User implements Serializable {
 		return result;
 	}
 
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -90,7 +79,7 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Order other = (Order) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -99,7 +88,8 @@ public class User implements Serializable {
 		return true;
 	}
 
+
 	
-
-
+	
+	
 }
