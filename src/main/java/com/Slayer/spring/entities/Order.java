@@ -2,6 +2,8 @@ package com.Slayer.spring.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.Slayer.spring.entities.enuns.OrderStatus;
@@ -24,22 +27,24 @@ public class Order implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",timezone = "GMT")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant instante;
-	
-	
-	
+
 	private Integer orderStatus;
-	
-	
+
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private User client;
+	
+	@OneToMany(mappedBy = "id.order")
+	private Set<OrderItem> items = new HashSet<>();
+	
+	
 
 	public Order() {
 	}
 
-	public Order(Integer id, Instant instante,OrderStatus orderStatus, User client) {
+	public Order(Integer id, Instant instante, OrderStatus orderStatus, User client) {
 		super();
 		this.id = id;
 		setOrderStatus(orderStatus);
@@ -61,17 +66,16 @@ public class Order implements Serializable {
 	public void setInstante(Instant instante) {
 		this.instante = instante;
 	}
-	
 
 	public OrderStatus getOrderStatus() {
-		return OrderStatus.valueOff(orderStatus) ;
+		return OrderStatus.valueOff(orderStatus);
 	}
 
 	public void setOrderStatus(OrderStatus orderStatus) {
-		if(orderStatus != null) {
+		if (orderStatus != null) {
 			this.orderStatus = orderStatus.getCode();
 		}
-		
+
 	}
 
 	public User getClient() {
@@ -80,6 +84,10 @@ public class Order implements Serializable {
 
 	public void setClient(User client) {
 		this.client = client;
+	}
+	
+	public Set<OrderItem>getItems(){
+		return items;
 	}
 
 	@Override
