@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.Slayer.spring.entities.Category;
 import com.Slayer.spring.entities.Order;
 import com.Slayer.spring.entities.OrderItem;
+import com.Slayer.spring.entities.Payment;
 import com.Slayer.spring.entities.Products;
 import com.Slayer.spring.entities.User;
 import com.Slayer.spring.entities.enuns.OrderStatus;
@@ -82,6 +83,9 @@ public class TestConfig implements CommandLineRunner {
 		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice()); 
 		orderItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4));
 		
+		Payment pay1 = new Payment(null,Instant.parse("2019-06-20T14:53:07Z"),o1);
+		o1.setPayment(pay1);
+		orderRepository.save(o1);
 	}
 
 }
